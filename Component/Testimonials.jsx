@@ -44,6 +44,15 @@ const students = [
     image: '/esther.jpg',
     text: 'My journey at Beulah Catering School is an unforgettable one. Before joining, baking was simply something I loved doing at home. I had the passion, but I lacked the knowledge, structure, and confidence to call myself a baker. Beulah Catering School completely changed that for me, Under the expert guidance and mentorship of Mummy Beulah, I received top-notch training in proper techniques, accurate measurements, food hygiene, and professional presentation. More than just teaching me recipes, the school taught me to believe in my own hands and built my confidence from the ground up. Today, I can proudly and confidently take orders, handle customers, and deliver quality cakes and snacks that I am truly proud of. I am deeply grateful to the school management, my distinguished Mummy Beulah, and my supportive parents for their endless patience and guidance. Thank you for giving me a foundation that will carry me through life.',
   },
+
+  {
+    id: 7,
+    name: 'Chef Hannah Chinecherem Ejere',
+    gender: 'Female',
+    image: '/hannah.jpg',
+    text: 'When I walked into Beulah, I came with passion. I loved to cook and bake, but passion alone doesnt make a chef. Beulah taught me that behind every perfect cake and every tasty meal, there are early mornings, burnt attempts, and the courage to start again, To our instructors, Mummy and Daddy Israel Revelation: thank you for all the corrections, for pushing us, and for never letting us serve mediocrity. You didnt just teach us recipes; you taught us standards. You showed us that cleanliness is a skill, presentation is respect, and taste is a memory. To my classmates: we started as strangers, but we are leaving as family. We have shared flour, tears, and absolute chaos in the kitchen. As we graduate, may we carry the name of Beulah with pride wherever we cook.I came to this school as Hannah Ejere, someone who simply likes to bake. Today, I graduate as Chef Hannah Chinecherem Ejere, certified by Beulah Catering School, ready to feed, create, and build a brand that will make this institution proud. This is not the end of our education, a chef never stops learning. This is only the beginning of our journey. Thank you.',
+
+  },
 ]
 
 export default function Testimonials() {
@@ -116,7 +125,8 @@ export default function Testimonials() {
                 alt={currentStudent.name}
                 className={`h-full w-full object-cover ${
                 currentStudent.name === 'Chef Mary Ibeto' ||
-                currentStudent.name === 'Chef Esther Ngozi'
+                currentStudent.name === 'Chef Esther Ngozi'||
+                currentStudent.name === 'Chef Hannah Chinecherem Ejere'
                 ? 'object-[center_15%]'
                 : 'object-center'
           }`}

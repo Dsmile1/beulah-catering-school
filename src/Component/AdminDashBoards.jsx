@@ -13,6 +13,8 @@ export default function AdminDashBoards() {
   const [authLoading, setAuthLoading] = useState(true);
   const [applications, setApplications] = useState([]);
   const [quoteRequests, setQuoteRequests] = useState([]);
+  const [newAdminEmail, setNewAdminEmail] = useState("");
+  const [updatingEmail, setUpdatingEmail] = useState(false);
 
   useEffect(() => {
     let mounted = true;
@@ -45,6 +47,44 @@ export default function AdminDashBoards() {
     if (error) setMessage(error.message);
 
     setLoading(false);
+  }
+
+     async function changeAdminEmail(event) {
+     event.preventDefault();
+
+     const requestedEmail = newAdminEmail.trim().toLowerCase();
+
+    if (!requestedEmail) {
+      setMessage("Please enter your new email address.");
+      return;
+    }
+
+    if (requestedEmail === session?.user?.email?.toLowerCase()) {
+      setMessage("This is already your current admin email.");
+      return;
+    }
+
+      setUpdatingEmail(true);
+      setMessage("");
+
+     try {
+       const { error } = await supabase.auth.updateUser({
+       email: requestedEmail,
+      });
+
+      if (error) throw error;
+
+     setMessage(
+       "Email change requested successfully. Check your email inboxes for confirmation instructions from Supabase."
+      );
+
+       setNewAdminEmail("");
+     } catch (error) {
+       console.error("Admin email update failed:", error);
+       setMessage(`Could not update admin email: ${error.message}`);
+     } finally {
+       setUpdatingEmail(false);
+     }
   }
 
   async function loadSubmissions() {
@@ -353,6 +393,50 @@ export default function AdminDashBoards() {
             Logout
           </button>
         </header>
+
+        <section className="mb-8 rounded-2xl bg-white p-6 shadow">
+          <h2 className="mb-4 text-xl font-bold text-blue-800">
+              Admin Account Settings
+          </h2>
+
+          <p className="mb-2 text-sm text-gray-600">
+              Current login email:
+          </p>
+
+          <p className="mb-5 font-semibold text-gray-900">
+               {session?.user?.email}
+          </p>
+
+          <form onSubmit={changeAdminEmail} className="max-w-lg space-y-4">
+          <label className="block">
+          <span className="mb-2 block font-medium text-gray-700">
+               New admin email
+          </span>
+
+          <input
+               type="email"
+               value={newAdminEmail}
+               onChange={(event) => setNewAdminEmail(event.target.value)}
+               placeholder="Enter your new admin email"
+               required
+               className="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-blue-500"
+          />
+          </label>
+
+          <button
+               type="submit"
+               disabled={updatingEmail}
+               className="rounded-lg bg-blue-600 px-5 py-3 font-semibold text-white hover:bg-blue-700 disabled:opacity-60"
+          >
+               {updatingEmail ? "Updating email..." : "Change Admin Email"}
+          </button>
+        </form>
+
+             <p className="mt-4 text-sm text-gray-500">
+                You may need to confirm the email change through messages sent
+                to your existing and new email addresses.
+             </p>
+      </section>
 
         {message && (
           <p

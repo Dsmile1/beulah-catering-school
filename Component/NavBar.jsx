@@ -1,109 +1,95 @@
-import React,{useState} from 'react'
-import {Link} from 'react-router-dom'
+
+import React, { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 
 export default function NavBar() {
-    const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation();
+
+  const navLinks = [
+  { name: "Home", path: "/" },
+  { name: "About Us", path: "/about" },
+  { name: "Programs", path: "/program" },
+  { name: "Our Services", path: "/Services" },
+  { name: "Gallery", path: "/gallery" },
+  { name: "Blog", path: "/blog" },
+  { name: "Contact Us", path: "/contact" },
+];
+
   return (
-    <nav className="fixed top-0 left-0 w-full z-50 bg-[#5F99D8] px-5 py-4 shadow-md">
-        <div className='flex justify-between items-center'>
-            <div className='flex items-center shrink-0'>
-            <img
-            src='/Blogo.png' 
-            alt='Logo'
-            className='w-32 h-20 sm:w-40 sm:h-24 object-contain'
-            />
-            </div>
-            <div className='hidden lg:flex items-center gap-8 font-bold text-lg xl:text-xl text-white'>
+    <nav className="fixed top-0 left-0 w-full z-50 bg-[#5F99D8] px-4 sm:px-5 py-3 shadow-md">
 
-                <Link to='/' className='hover:text-gray-200 transition'>
-                Home   
-                </Link>
+      <div className="flex justify-between items-center">
 
-                <Link to='/about' className='hover:text-gray-200 transition'>
-                About Us
-                </Link>
+        {/* Logo */}
+        <Link to="/" onClick={() => setIsOpen(false)}>
+          <img
+            src="/Blogo.png"
+            alt="Beulah Catering School"
+            className="w-28 h-16 sm:w-36 sm:h-20 object-contain"
+          />
+        </Link>
 
-                <Link to='/program' className='hover:text-gray-200 transition'>
-                Programs
-                </Link>
+        {/* Desktop Navigation */}
+        <div className="hidden lg:flex items-center gap-5 xl:gap-8 font-bold text-white text-base xl:text-lg">
 
-                <Link to='/services' className='hover:text-gray-200 transition'>
-                Our Services
-                </Link>
-
-                <Link to='/gallery' className='hover:text-gray-200 transition' target='_blank'>
-                Gallery
-                </Link>
-
-                <Link to='/blog' className='hover:text-gray-200 transition'>
-                Blog
-                </Link>
-
-                <Link to='/contact' className='hover:text-gray-200 transition'>
-                Contact Us
-                </Link>
-
-            </div>
-
-            <button
-                onClick={() => setIsOpen(!isOpen)}
-                className='lg:hidden text-3xl text-white focus:outline-none'
-                aria-label='Toggle Menu'
+          {navLinks.map((item) => (
+            <Link
+              key={item.path}
+              to={item.path}
+              className={`hover:text-gray-200 transition ${
+                location.pathname === item.path
+                  ? "text-yellow-200"
+                  : ""
+              }`}
             >
-                {isOpen ? '✖' : '☰'}
-            </button>
+              {item.name}
+            </Link>
+          ))}
+
         </div>
 
-        {isOpen && (
-            <div className='lg:hidden mt-4 bg-blue-500 rounded-lg px-5 py-4'>
-            <div className='flex flex-col gap-4 font-bold text-lg text-white'>
-                <a href='#home'
+        {/* Mobile Menu Button */}
+        <button
+          type="button"
+          onClick={() => setIsOpen(!isOpen)}
+          className="lg:hidden text-3xl text-white focus:outline-none"
+          aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
+          aria-expanded={isOpen}
+          aria-controls="mobile-navigation"
+        >
+          {isOpen ? "✕" : "☰"}
+        </button>
+
+      </div>
+
+      {/* Mobile Navigation */}
+      {isOpen && (
+        <div
+          id="mobile-navigation"
+          className="lg:hidden absolute top-full left-0 w-full bg-[#5F99D8] shadow-lg border-t border-white/20"
+        >
+          <div className="flex flex-col px-6 py-5 gap-4 font-bold text-white text-lg">
+
+            {navLinks.map((item) => (
+              <Link
+                key={item.path}
+                to={item.path}
                 onClick={() => setIsOpen(false)}
-                className='hover:text-gray-200'>
-                Home   
-                </a>
+                className={`hover:text-yellow-200 transition ${
+                  location.pathname === item.path
+                    ? "text-yellow-200"
+                    : ""
+                }`}
+              >
+                {item.name}
+              </Link>
+            ))}
 
-                <a href='#about'
-                onClick={() => setIsOpen(false)}
-                className='hover:text-gray-200'>
-                About Us
-                </a>
+          </div>
+        </div>
+      )}
 
-                <a href='#programs'
-                onClick={() => setIsOpen(false)}
-                className='hover:text-gray-200'>
-                Programs
-                </a>
-
-                <a href='#services'
-                onClick={() => setIsOpen(false)}
-                className='hover:text-gray-200'>
-                Our Services
-                </a>
-
-                <a href='#gallery'
-                onClick={() => setIsOpen(false)}
-                className='hover:text-gray-200'>
-                Gallery
-                </a>
-
-                <a href='#blog'
-                onClick={()=> setIsOpen(false)}
-                className='hover:text-gray-200'>
-                    Blog
-                </a>
-                
-                <a href='#contact'
-                onClick={() => setIsOpen(false)}
-                className='hover:text-gray-200'>
-                Contact Us
-                </a>
-            </div>
-
-            </div>
-
-        )}
-      
     </nav>
-  )
+  );
 }
